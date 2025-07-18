@@ -18,6 +18,7 @@ document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (toolti
 });
 
 
+
 // status toggle
 function statusToggle(route) {
     $.ajax({

@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\admin\{UserListController, TeacherListController, StudentListController, ClassListController ,
                                 SubjectListController ,StudentMarkListController, StudentProgressMarkingController,
                                 ClassComparisonController ,ProgressChartController ,StudentReadmissionController, 
-                                DesignationController, StudentProgressAddController, ReportController};
+                                DesignationController, StudentProgressAddController, ReportController, PageContentController};
 
 //End New Route
 
@@ -290,7 +290,16 @@ Route::prefix('admin')->group(function () {
             });
         });
 
-
+        Route::prefix('content-management')->group(function(){
+            Route::prefix('page-content')->group(function(){
+                Route::get('/',[PageContentController::class, 'index'])->name('admin.pagecontent.list');
+                Route::get('/create', [PageContentController::class, 'create'])->name('admin.pagecontent.create');
+                Route::post('/store',[PageContentController::class, 'store' ])->name('admin.pagecontent.store');
+                Route::get('/edit/{id}', [PageContentController::class, 'edit'])->name('admin.pagecontent.edit');
+                Route::post('/update/{id}', [PageContentController::class, 'update'])->name('admin.pagecontent.update');
+                Route::get('/status/{id}', [PageContentController::class, 'status'])->name('admin.pagecontent.status');
+            });
+         });
         // Route::prefix('progress-chart')->group(function(){
         //     Route::get('/',[ProgressChartController::class, 'index'])->name('admin.progresschart');
         //     Route::get('get-students-by-session', [ProgressChartController::class, 'getStudentsBySession'])->name('admin.getStudentsBySession');

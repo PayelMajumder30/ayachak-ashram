@@ -137,15 +137,29 @@
               </a>
             </li>
 
-
-            
-            <li class="menu-item {{ (request()->is('admin/master-module/designations*')) ? 'open' : '' }}">
+            {{-- <li class="menu-item {{ (request()->is('admin/master-module/designations*')) ? 'open' : '' }}">
               <a href="{{route('admin.designation.list')}}" class="menu-link">
                 <div>Designations</div>
               </a>
-            </li>
+            </li> --}}
           </ul>
         </li>
+        <li class="menu-item" style="">
+          <a href="#" class="menu-link menu-toggle waves-effect" target="_blank">
+            <i class="menu-icon fa-solid fa-person-chalkboard"></i>
+            <div>Content Management</div>
+          </a>
+          <ul class="menu-sub">
+            
+            <li class="menu-item">
+              <a href="{{route('admin.pagecontent.list')}}" class="menu-link">
+                <div>Page content</div>
+              </a>
+            </li>
+            
+          </ul>
+        </li>
+            
 
       {{-- Report Management --}}
         {{-- <li class="menu-item {{ (request()->is('admin/report*')) ? 'open' : '' }}">
@@ -154,14 +168,20 @@
             <div>Report</div>
           </a>
         </li> --}}
+        {{-- <li class="menu-item {{ (request()->is('admin/report*')) ? 'open' : '' }}">
+          <a href="{{route('admin.report.index')}}" class="menu-link">
+            <i class="menu-icon fa-solid fa-chart-pie"></i>
+            <div>Report</div>
+          </a>
+        </li> --}}
       
-      {{-- <li class="menu-item">
+      <li class="menu-item">
         <a class="btn btn-danger d-flex rounded-0" href="{{ route('admin.logout') }}"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <small class="align-middle">Logout</small>
               <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
           </a>
-      </li> --}}
+      </li>
       <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
             @csrf
         </form>
