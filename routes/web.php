@@ -137,7 +137,7 @@ Route::prefix('admin')->group(function () {
     //for reset password
     Route::post('/forgot-password', [AdminAuthController::class, 'resetPassword'])->name('admin.reset-password');
 
-    // Protected admin dashboard
+   
     Route::middleware('admin', 'prevent-back-history')->group(function () {
         Route::get('/dashboard', [Analytics::class, 'index'])->name('admin.dashboard');
         Route::get('/chart-data', [Analytics::class, 'getStudentAdmissionChartData'])->name('admin.dashboard.chart-data');
@@ -291,22 +291,22 @@ Route::prefix('admin')->group(function () {
         });
 
 
-        Route::prefix('progress-chart')->group(function(){
-            Route::get('/',[ProgressChartController::class, 'index'])->name('admin.progresschart');
-            Route::get('get-students-by-session', [ProgressChartController::class, 'getStudentsBySession'])->name('admin.getStudentsBySession');
-            Route::get('get-class-subject-by-student', [ProgressChartController::class, 'getClassBySessionAndStudent'])->name('admin.getClassBySessionAndStudent');
-            Route::get('/data',[ProgressChartController::class, 'fetchChartData'])->name('admin.fetchchartdata');
-        });
+        // Route::prefix('progress-chart')->group(function(){
+        //     Route::get('/',[ProgressChartController::class, 'index'])->name('admin.progresschart');
+        //     Route::get('get-students-by-session', [ProgressChartController::class, 'getStudentsBySession'])->name('admin.getStudentsBySession');
+        //     Route::get('get-class-subject-by-student', [ProgressChartController::class, 'getClassBySessionAndStudent'])->name('admin.getClassBySessionAndStudent');
+        //     Route::get('/data',[ProgressChartController::class, 'fetchChartData'])->name('admin.fetchchartdata');
+        // });
 
-        Route::prefix('report')->group(function(){
-            Route::get('/',[ReportController::class, 'index'])->name('admin.report.index');
-            Route::get('/chart-data', [ReportController::class, 'getChartData'])->name('admin.report.getChartData');
-            Route::get('/academic-reports/classes-by-session', [ReportController::class, 'getClassesBySession'])->name('admin.report.getClassesBySession');
-            Route::get('/academic-reports/subjects-by-class', [ReportController::class, 'getSubjectsByClassAndSession'])->name('admin.report.getSubjectsByClassAndSession');
-            Route::get('/academic-reports/students-by-class-session', [ReportController::class, 'getStudentsByClassAndSession'])->name('admin.report.getStudentsByClassAndSession');
-            Route::get('/student-report-card', [ReportController::class, 'getStudentReportCard'])->name('admin.report.getStudentReportCard');
-            Route::get('/export', [ReportController::class, 'export'])->name('admin.report.export');
-        });
+        // Route::prefix('report')->group(function(){
+        //     Route::get('/',[ReportController::class, 'index'])->name('admin.report.index');
+        //     Route::get('/chart-data', [ReportController::class, 'getChartData'])->name('admin.report.getChartData');
+        //     Route::get('/academic-reports/classes-by-session', [ReportController::class, 'getClassesBySession'])->name('admin.report.getClassesBySession');
+        //     Route::get('/academic-reports/subjects-by-class', [ReportController::class, 'getSubjectsByClassAndSession'])->name('admin.report.getSubjectsByClassAndSession');
+        //     Route::get('/academic-reports/students-by-class-session', [ReportController::class, 'getStudentsByClassAndSession'])->name('admin.report.getStudentsByClassAndSession');
+        //     Route::get('/student-report-card', [ReportController::class, 'getStudentReportCard'])->name('admin.report.getStudentReportCard');
+        //     Route::get('/export', [ReportController::class, 'export'])->name('admin.report.export');
+        // });
 
     });
 });

@@ -68,7 +68,7 @@
 
       {{-- Student Management --}}
       
-        <li class="menu-item {{ (request()->is('admin/student-management*')) ? 'open' : '' }}" style="">
+        {{-- <li class="menu-item {{ (request()->is('admin/student-management*')) ? 'open' : '' }}" style="">
           <a href="#" class="menu-link menu-toggle waves-effect" target="_blank">
             <i class="menu-icon fa-solid fa-graduation-cap"></i>
             <div>Student Management</div>
@@ -94,20 +94,20 @@
                 </li>
               @endif
 
-            {{-- @if (hasPermissionByChild('student_progress_marking_list')) --}}
-            {{-- <li class="menu-item {{ request()->is('admin/student-progress-marking*') ? 'active' : '' }}">
+            @if (hasPermissionByChild('student_progress_marking_list'))
+            <li class="menu-item {{ request()->is('admin/student-progress-marking*') ? 'active' : '' }}">
                 <a href="{{ route('admin.student.progressmarkinglist', [$defaultStudentId, $defaultSession]) }}" class="menu-link">
                     Progress Marking
                 </a>
-            </li> --}}
+            </li>
             <li class="menu-item {{ request()->is('admin/student-progress-marking') ? 'active' : '' }}">
               <a href="{{ route('admin.student.progressmarking.select') }}" class="menu-link">
                   <div>Progress Marking</div>
               </a>
             </li>
-            {{-- @endif --}}
+            @endif
           </ul>
-        </li>
+        </li> --}}
      
 
       {{-- Master Management --}}
@@ -137,36 +137,31 @@
               </a>
             </li>
 
-            <li class="menu-item {{ (request()->is('admin/master-module/progress-chart*')) ? 'open' : '' }}">
-              <a href="{{route('admin.progresschart')}}" class="menu-link">
-                <div>Progress Chart</div>
-              </a>
-            </li>
 
-            {{-- Designation --}}
-            {{-- <li class="menu-item {{ (request()->is('admin/master-module/designations*')) ? 'open' : '' }}">
+            
+            <li class="menu-item {{ (request()->is('admin/master-module/designations*')) ? 'open' : '' }}">
               <a href="{{route('admin.designation.list')}}" class="menu-link">
                 <div>Designations</div>
               </a>
-            </li> --}}
+            </li>
           </ul>
         </li>
 
       {{-- Report Management --}}
-        <li class="menu-item {{ (request()->is('admin/report*')) ? 'open' : '' }}">
+        {{-- <li class="menu-item {{ (request()->is('admin/report*')) ? 'open' : '' }}">
           <a href="{{route('admin.report.index')}}" class="menu-link">
             <i class="menu-icon fa-solid fa-chart-pie"></i>
             <div>Report</div>
           </a>
-        </li>
+        </li> --}}
       
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a class="btn btn-danger d-flex rounded-0" href="{{ route('admin.logout') }}"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <small class="align-middle">Logout</small>
               <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
           </a>
-      </li>
+      </li> --}}
       <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
             @csrf
         </form>
