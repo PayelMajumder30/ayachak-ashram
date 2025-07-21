@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Facades\Excel;
+// use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Log;
 use App\Imports\StudentsImport;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -380,84 +380,84 @@ class StudentListController extends Controller
 
     
 
-    public function export(Request $request)
-    {
-        $keyword = $request->input('keyword');
+    // public function export(Request $request)
+    // {
+    //     $keyword = $request->input('keyword');
 
-        $admin = auth()->guard('admin')->user();
+    //     $admin = auth()->guard('admin')->user();
 
-        $query = Student::with(['admission.academicsession'])
-            ->when($admin && $admin->user_type === 'Teacher', function ($q) use ($admin) {
-                $assignedClassIds = $admin->teacherClasses()->pluck('class_id')->toArray();
-                $q->whereHas('admission', function ($q) use ($assignedClassIds) {
-                    $q->whereIn('class_id', $assignedClassIds);
-                });
-            })
-            ->when($keyword, function ($q) use ($keyword) {
-                $q->where(function($subQuery) use ($keyword) {
-                    $subQuery->where('student_name', 'like', '%' . $keyword . '%')
-                        ->orWhere('student_id', 'like', '%' . $keyword . '%')
-                        ->orWhere('gender', 'like', '%' . $keyword . '%')
-                        ->orWhere('parent_name', 'like', '%' . $keyword . '%')
-                        ->orWhere('father_name', 'like', '%' . $keyword . '%')
-                        ->orWhere('mother_name', 'like', '%' . $keyword . '%')
-                        ->orWhere('aadhar_no', 'like', '%' . $keyword . '%')
-                        ->orWhere('blood_group', 'like', '%' . $keyword . '%')
-                        ->orWhere('height', 'like', '%' . $keyword . '%')
-                        ->orWhere('weight', 'like', '%' . $keyword . '%')
-                        ->orWhere('email', 'like', '%' . $keyword . '%')
-                        ->orWhere('phone_number', 'like', '%' . $keyword . '%')
-                        ->orWhere('address', 'like', '%' . $keyword . '%');
-                });
-            });
+    //     $query = Student::with(['admission.academicsession'])
+    //         ->when($admin && $admin->user_type === 'Teacher', function ($q) use ($admin) {
+    //             $assignedClassIds = $admin->teacherClasses()->pluck('class_id')->toArray();
+    //             $q->whereHas('admission', function ($q) use ($assignedClassIds) {
+    //                 $q->whereIn('class_id', $assignedClassIds);
+    //             });
+    //         })
+    //         ->when($keyword, function ($q) use ($keyword) {
+    //             $q->where(function($subQuery) use ($keyword) {
+    //                 $subQuery->where('student_name', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('student_id', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('gender', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('parent_name', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('father_name', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('mother_name', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('aadhar_no', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('blood_group', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('height', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('weight', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('email', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('phone_number', 'like', '%' . $keyword . '%')
+    //                     ->orWhere('address', 'like', '%' . $keyword . '%');
+    //             });
+    //         });
 
-        $students = $query->latest()->get();
+    //     $students = $query->latest()->get();
 
 
-        if ($students->count() > 0) {
-            $delimiter = ",";
-            $filename = "students_export_" . date('Y-m-d') . ".csv";
+    //     if ($students->count() > 0) {
+    //         $delimiter = ",";
+    //         $filename = "students_export_" . date('Y-m-d') . ".csv";
 
-            $f = fopen('php://memory', 'w');
+    //         $f = fopen('php://memory', 'w');
 
-            // CSV column headers
-            $headers = ['Student Name', 'Student ID', 'Gender', 'Father Name', 'Mother Name' ,'Parent Name', 'Aadhaar number',
-            'Email', 'Phone Number', 'Address', 'Date of Birth','Academic Session', 'Blood Group', 'Height', 'Weight', ];
-            fputcsv($f, $headers, $delimiter);
+    //         // CSV column headers
+    //         $headers = ['Student Name', 'Student ID', 'Gender', 'Father Name', 'Mother Name' ,'Parent Name', 'Aadhaar number',
+    //         'Email', 'Phone Number', 'Address', 'Date of Birth','Academic Session', 'Blood Group', 'Height', 'Weight', ];
+    //         fputcsv($f, $headers, $delimiter);
 
-            foreach ($students as $student) {
-                $lineData = [
-                    $student->student_name,
-                    $student->student_id,
-                    $student->gender,
-                    $student->father_name,
-                    $student->mother_name,
-                    $student->parent_name,
-                    $student->aadhar_no,
-                    $student->email,
-                    $student->phone_number,
-                    $student->address,
-                    //$student->academic_session_id,
-                    $student->date_of_birth ? date('d-m-Y',strtotime($student->date_of_birth)) : '',
-                    optional($student->admission->academicsession)->session_name, 
-                    $student->blood_group,
-                    $student->height,
-                    $student->weight,
-                    // optional($student->created_at)->format('d-m-Y h:i A'),
-                ];
-                fputcsv($f, $lineData, $delimiter);
-            }
+    //         foreach ($students as $student) {
+    //             $lineData = [
+    //                 $student->student_name,
+    //                 $student->student_id,
+    //                 $student->gender,
+    //                 $student->father_name,
+    //                 $student->mother_name,
+    //                 $student->parent_name,
+    //                 $student->aadhar_no,
+    //                 $student->email,
+    //                 $student->phone_number,
+    //                 $student->address,
+    //                 //$student->academic_session_id,
+    //                 $student->date_of_birth ? date('d-m-Y',strtotime($student->date_of_birth)) : '',
+    //                 optional($student->admission->academicsession)->session_name, 
+    //                 $student->blood_group,
+    //                 $student->height,
+    //                 $student->weight,
+    //                 // optional($student->created_at)->format('d-m-Y h:i A'),
+    //             ];
+    //             fputcsv($f, $lineData, $delimiter);
+    //         }
 
-            // Rewind and output
-            fseek($f, 0);
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $filename . '";');
-            fpassthru($f);
-            exit;
-        } else {
-            return redirect()->back()->with('error', 'No records found to export.');
-        }
-    }
+    //         // Rewind and output
+    //         fseek($f, 0);
+    //         header('Content-Type: text/csv');
+    //         header('Content-Disposition: attachment; filename="' . $filename . '";');
+    //         fpassthru($f);
+    //         exit;
+    //     } else {
+    //         return redirect()->back()->with('error', 'No records found to export.');
+    //     }
+    // }
 
     public function studentProgressList($student_id, $current_session){
 
@@ -551,175 +551,175 @@ class StudentListController extends Controller
     }
 
 
-    public function import(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
-        ]);
+    // public function import(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
 
-        try {
-            DB::beginTransaction();
+    //     try {
+    //         DB::beginTransaction();
 
-            $file = $request->file('excel_file');
-            $data = Excel::toArray([], $file);
-            $rows = $data[0];
+    //         $file = $request->file('excel_file');
+    //         $data = Excel::toArray([], $file);
+    //         $rows = $data[0];
 
-            $skippedRows = [];
-            $successCount = 0;
+    //         $skippedRows = [];
+    //         $successCount = 0;
 
-            foreach (array_slice($rows, 1) as $index => $row) {
-                $rowNumber = $index + 2;
-                $row = array_map('trim', $row);
+    //         foreach (array_slice($rows, 1) as $index => $row) {
+    //             $rowNumber = $index + 2;
+    //             $row = array_map('trim', $row);
 
-                //  Skip completely empty rows
-                if (empty(array_filter($row))) {
-                    continue;
-                }
+    //             //  Skip completely empty rows
+    //             if (empty(array_filter($row))) {
+    //                 continue;
+    //             }
 
-                //  Early check for column count
-                if (count($row) < 18) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Incomplete data (less than 18 columns)"]
-                    ]);
-                }
+    //             //  Early check for column count
+    //             if (count($row) < 18) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Incomplete data (less than 18 columns)"]
+    //                 ]);
+    //             }
 
-                // Required field check
-                $requiredIndexes = [0, 2, 5, 6, 7, 8, 17];
-                $missingFields = [];
+    //             // Required field check
+    //             $requiredIndexes = [0, 2, 5, 6, 7, 8, 17];
+    //             $missingFields = [];
 
-                foreach ($requiredIndexes as $i) {
-                    if (!isset($row[$i]) || trim($row[$i]) === '') {
-                        $missingFields[] = "Column index $i";
-                    }
-                }
+    //             foreach ($requiredIndexes as $i) {
+    //                 if (!isset($row[$i]) || trim($row[$i]) === '') {
+    //                     $missingFields[] = "Column index $i";
+    //                 }
+    //             }
 
-                if (!empty($missingFields)) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Missing fields - " . implode(', ', $missingFields)]
-                    ]);
-                }
+    //             if (!empty($missingFields)) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Missing fields - " . implode(', ', $missingFields)]
+    //                 ]);
+    //             }
 
-                try {
-                    $admission_date = Carbon::instance(Date::excelToDateTimeObject($row[5]))->format('Y-m-d');
-                    $date_of_birth  = Carbon::instance(Date::excelToDateTimeObject($row[18]))->format('Y-m-d');
-                } catch (\Exception $e) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Invalid date format - " . $e->getMessage()]
-                    ], 200);
-                }
+    //             try {
+    //                 $admission_date = Carbon::instance(Date::excelToDateTimeObject($row[5]))->format('Y-m-d');
+    //                 $date_of_birth  = Carbon::instance(Date::excelToDateTimeObject($row[18]))->format('Y-m-d');
+    //             } catch (\Exception $e) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Invalid date format - " . $e->getMessage()]
+    //                 ], 200);
+    //             }
 
-                if (Student::where('phone_number', $row[2])->exists()) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Duplicate phone number"]
-                    ], 200);
-                }
+    //             if (Student::where('phone_number', $row[2])->exists()) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Duplicate phone number"]
+    //                 ], 200);
+    //             }
 
-                if (!empty($row[1]) && Student::where('email', $row[1])->exists()) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Duplicate email"]
-                    ], 200);
-                }
+    //             if (!empty($row[1]) && Student::where('email', $row[1])->exists()) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Duplicate email"]
+    //                 ], 200);
+    //             }
 
-                if (Student::where('aadhar_no', $row[7])->exists()) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Duplicate Aadhaar"]
-                    ], 200);
-                }
+    //             if (Student::where('aadhar_no', $row[7])->exists()) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Duplicate Aadhaar"]
+    //                 ], 200);
+    //             }
 
-                $sessionName = trim($row[17]);
+    //             $sessionName = trim($row[17]);
 
-                $session = AcademicSession::where('session_name', $sessionName)->first();
-                if (!$session) {
-                    $session = createNewExistingSession($sessionName);
-                    if (!$session) {
-                        return response()->json([
-                            'message' => 'CSV failed to import.',
-                            'errors' => ["Row $rowNumber: Failed to create academic session '$sessionName'"]
-                        ], 200);
-                    }
-                }
+    //             $session = AcademicSession::where('session_name', $sessionName)->first();
+    //             if (!$session) {
+    //                 $session = createNewExistingSession($sessionName);
+    //                 if (!$session) {
+    //                     return response()->json([
+    //                         'message' => 'CSV failed to import.',
+    //                         'errors' => ["Row $rowNumber: Failed to create academic session '$sessionName'"]
+    //                     ], 200);
+    //                 }
+    //             }
 
-                $class = ClassList::where('class', $row[3])->first();
-                if (!$class) {
-                    return response()->json([
-                        'message' => 'CSV failed to import.',
-                        'errors' => ["Row $rowNumber: Class '{$row[3]}' not found"]
-                    ], 200);
-                }
+    //             $class = ClassList::where('class', $row[3])->first();
+    //             if (!$class) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import.',
+    //                     'errors' => ["Row $rowNumber: Class '{$row[3]}' not found"]
+    //                 ], 200);
+    //             }
 
-                $admissionYear = $session->session_name;
-                $classAlias = $class->class;
-                $rollNo = $row[4];
+    //             $admissionYear = $session->session_name;
+    //             $classAlias = $class->class;
+    //             $rollNo = $row[4];
 
-                // Roll number duplicate check
-                $section = $row[6];
-                $rollExists = StudentAdmission::where('session_id', $session->id)
-                                    ->where('class_id', $class->id)
-                                    ->where('section', $section)
-                                    ->where('roll_number', $rollNo)
-                                    ->exists();
-                if($rollExists) {
-                    return response()->json([
-                        'message' => 'CSV failed to import',
-                        'errors'  => ["Row $rowNumber: Roll number $rollNo already exists in session '{$session->session_name}', class '{$class->class}', section '$section'."]
-                    ],200);
-                }
-                $studentUniqueId = Student::generateStudentUid($admissionYear, $classAlias, $rollNo);
+    //             // Roll number duplicate check
+    //             $section = $row[6];
+    //             $rollExists = StudentAdmission::where('session_id', $session->id)
+    //                                 ->where('class_id', $class->id)
+    //                                 ->where('section', $section)
+    //                                 ->where('roll_number', $rollNo)
+    //                                 ->exists();
+    //             if($rollExists) {
+    //                 return response()->json([
+    //                     'message' => 'CSV failed to import',
+    //                     'errors'  => ["Row $rowNumber: Roll number $rollNo already exists in session '{$session->session_name}', class '{$class->class}', section '$section'."]
+    //                 ],200);
+    //             }
+    //             $studentUniqueId = Student::generateStudentUid($admissionYear, $classAlias, $rollNo);
 
-                $student = Student::create([
-                    'student_id'     => $studentUniqueId,
-                    'student_name'   => $row[0],
-                    'email'          => $row[1] ?? null,
-                    'phone_number'   => $row[2],
-                    'aadhar_no'      => $row[7],
-                    'gender'         => $row[8],
-                    'parent_name'    => $row[9] ?? null,
-                    'address'        => $row[10] ?? null,
-                    'father_name'    => $row[11] ?? null,
-                    'mother_name'    => $row[12] ?? null,
-                    'divyang'        => $row[13] ?? 'No',
-                    'blood_group'    => $row[14] ?? null,
-                    'height'         => $row[15] ?? null,
-                    'weight'         => $row[16] ?? null,
-                    'date_of_birth'  => $date_of_birth,
-                ]);
+    //             $student = Student::create([
+    //                 'student_id'     => $studentUniqueId,
+    //                 'student_name'   => $row[0],
+    //                 'email'          => $row[1] ?? null,
+    //                 'phone_number'   => $row[2],
+    //                 'aadhar_no'      => $row[7],
+    //                 'gender'         => $row[8],
+    //                 'parent_name'    => $row[9] ?? null,
+    //                 'address'        => $row[10] ?? null,
+    //                 'father_name'    => $row[11] ?? null,
+    //                 'mother_name'    => $row[12] ?? null,
+    //                 'divyang'        => $row[13] ?? 'No',
+    //                 'blood_group'    => $row[14] ?? null,
+    //                 'height'         => $row[15] ?? null,
+    //                 'weight'         => $row[16] ?? null,
+    //                 'date_of_birth'  => $date_of_birth,
+    //             ]);
 
-                $admission = StudentAdmission::create([
-                    'student_id'     => $student->id,
-                    'session_id'     => $session->id,
-                    'class_id'       => $class->id,
-                    'section'        => $row[6],
-                    'roll_number'    => $rollNo,
-                    'admission_date' => $admission_date,
-                ]);
+    //             $admission = StudentAdmission::create([
+    //                 'student_id'     => $student->id,
+    //                 'session_id'     => $session->id,
+    //                 'class_id'       => $class->id,
+    //                 'section'        => $row[6],
+    //                 'roll_number'    => $rollNo,
+    //                 'admission_date' => $admission_date,
+    //             ]);
 
-                $student->update(['student_admission_id' => $admission->id]);
-                $successCount++;
-            }
+    //             $student->update(['student_admission_id' => $admission->id]);
+    //             $successCount++;
+    //         }
 
-            DB::commit();
+    //         DB::commit();
 
-            return response()->json([
-                'message' => 'CSV imported successfully.',
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Import error: ' . $e->getMessage());
-            return response()->json([
-                'errors' => ['Unexpected error during import. Please check the file.']
-            ], 500);
-        }
-    }
+    //         return response()->json([
+    //             'message' => 'CSV imported successfully.',
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         \Log::error('Import error: ' . $e->getMessage());
+    //         return response()->json([
+    //             'errors' => ['Unexpected error during import. Please check the file.']
+    //         ], 500);
+    //     }
+    // }
 
 
    
