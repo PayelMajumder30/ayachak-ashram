@@ -9,10 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('category_id');
             $table->string('title');
             $table->string('product_code')->unique();
             $table->longText('description')->nullable();
@@ -20,6 +22,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->comment('1: active | 0: inactive');
             $table->softDeletes(); // creates deleted_at column
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

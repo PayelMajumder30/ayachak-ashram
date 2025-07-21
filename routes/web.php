@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\admin\{UserListController, TeacherListController, StudentListController, ClassListController ,
                                 SubjectListController ,StudentMarkListController, StudentProgressMarkingController,
                                 ClassComparisonController ,ProgressChartController ,StudentReadmissionController, 
-                                DesignationController, StudentProgressAddController, ReportController, PageContentController};
+                                DesignationController, StudentProgressAddController, ReportController, PageContentController, ProductController};
 
 //End New Route
 
@@ -299,6 +299,16 @@ Route::prefix('admin')->group(function () {
                 Route::post('/update', [PageContentController::class, 'update'])->name('admin.pagecontent.update');
                 Route::get('/status/{id}', [PageContentController::class, 'status'])->name('admin.pagecontent.status');
                 Route::post('/delete', [PageContentController::class, 'delete'])->name('admin.pagecontent.delete');
+            });
+         });
+
+        Route::prefix('product-management')->group(function(){
+            Route::prefix('products')->group(function(){
+                Route::get('/',[ProductController::class, 'index'])->name('admin.products.list');
+                Route::get('/create', [ProductController::class, 'create'])->name('admin.products.create');
+                Route::post('/store',[ProductController::class, 'store' ])->name('admin.products.store');
+                Route::get('/status/{id}', [ProductController::class, 'status'])->name('admin.products.status');
+                Route::get('/featured/{id}', [ProductController::class, 'feature'])->name('admin.products.feature');
             });
          });
         // Route::prefix('progress-chart')->group(function(){

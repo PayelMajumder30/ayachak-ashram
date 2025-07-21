@@ -159,6 +159,22 @@
             
           </ul>
         </li>
+
+        <li class="menu-item" style="">
+          <a href="#" class="menu-link menu-toggle waves-effect" target="_blank">
+            <i class="menu-icon fa-solid fa-person-chalkboard"></i>
+            <div>Product Management</div>
+          </a>
+          <ul class="menu-sub">
+            
+            <li class="menu-item">
+              <a href="{{route('admin.products.list')}}" class="menu-link">
+                <div>Products</div>
+              </a>
+            </li>
+            
+          </ul>
+        </li>
             
 
       {{-- Report Management --}}

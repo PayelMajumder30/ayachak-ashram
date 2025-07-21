@@ -32,3 +32,18 @@ function statusToggle(route) {
         }
     });
 }
+
+
+// feature toggle
+function featureToggle(route) {
+    $.ajax({
+        url: route,
+        success: function(resp) {
+            if (resp.status == 200) {
+                toastFire('success', resp.message);
+            } else {
+                toastFire('error', resp.message);
+            }
+        }
+    });
+}

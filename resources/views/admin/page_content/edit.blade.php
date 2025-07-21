@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Page - Edit')
+@section('title', 'Update - Page')
 
 @section('content')
 
