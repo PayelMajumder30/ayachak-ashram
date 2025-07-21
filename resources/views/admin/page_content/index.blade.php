@@ -67,23 +67,22 @@
                         <td>
                             <div class="form-check form-switch" data-bs-toggle="tooltip" title="Toggle status">
                                 <input class="form-check-input ms-auto" type="checkbox" id="customSwitch{{$item->id}}"
-                                {{ $item->status ? 'checked' : ''}} onclick="statusToggle('{{route('admin.pagecontent.status', $item->id)}}', this)">
+                                {{ $item->status ? 'checked' : ''}} onclick="statusToggle('{{route('admin.pagecontent.status', $item->id)}}', this)" />
                                 <label class="form-check-label" for="customSwitch{{$item->id}}"></label>
                             </div>
                         </td>
                         <td class="d-flex">
                             <div class="btn-group">
-                                <a href="javascript:void(0);"
-                                    class="btn btn-sm btn-icon btn-outline-dark"
-                                    data-bs-toggle="tooltip"
-                                    title="Edit">
+                                <a href="{{ route('admin.pagecontent.edit', $item->id) }}" class="btn btn-sm btn-icon btn-outline-dark"                     
+                                    data-bs-toggle="tooltip"  title="Edit">
                                     <i class="ri-pencil-line"></i>
                                 </a>
-                                @if ($item->custom_field == 1)
-                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger delete-btn" data-toggle="tooltip" title="Delete" data-id="{{ $item->id }}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                @endif
+                            <div>
+                                <a href="javascript:void(0);" class="btn btn-sm btn-icon btn-outline-danger" onclick="deletePage({{ $item->id }})"     
+                                    data-bs-toggle="tooltip" title="Delete">
+                                    <i class="ri-delete-bin-6-line"></i>
+                                </a>
+                            </div> 
                                     
                             </div>
                         </td>
@@ -106,7 +105,37 @@
 @section('scripts')
 <script>
   
-
+ function deletePage(pageId) {
+    Swal.fire({
+        icon: 'warning',
+        title: "Are you sure you want to delete this?",
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "{{ route('admin.pagecontent.delete')}}",
+                type: 'POST',
+                data: {
+                    "id": pageId,
+                    "_token": '{{ csrf_token() }}',
+                },
+                success: function (data){
+                    if (data.status != 200) {
+                        toastFire('error', data.message);
+                    } else {
+                        toastFire('success', data.message);
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+  }
 
 </script>
 
