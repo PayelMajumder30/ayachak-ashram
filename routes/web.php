@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 
 //New Route
 use App\Http\Controllers\Auth\AdminAuthController;
-use App\Http\Controllers\admin\{UserListController, TeacherListController, StudentListController, ClassListController ,
+use App\Http\Controllers\admin\{ UserListController, TeacherListController, StudentListController, ClassListController ,
                                 SubjectListController ,StudentMarkListController, StudentProgressMarkingController,
                                 ClassComparisonController ,ProgressChartController ,StudentReadmissionController, 
-                                DesignationController, StudentProgressAddController, ReportController, PageContentController};
+                                DesignationController, StudentProgressAddController, ReportController, PageContentController, 
+                                CategoryController};
 
 //End New Route
 
@@ -301,6 +302,17 @@ Route::prefix('admin')->group(function () {
                 Route::post('/delete', [PageContentController::class, 'delete'])->name('admin.pagecontent.delete');
             });
          });
+
+
+        Route::prefix('category')->group(function (){
+            Route::get('/',[CategoryController::class, 'index'])->name('admin.category.index');
+            //Route::get('/create',[CategoryController::class, 'create'])->name('admin.category.create');
+            Route::post('/store',[CategoryController::class, 'store'])->name('admin.category.store');
+            //Route::get('/edit/{}',[CategoryController::class, 'edit'])->name('admin.category.edit');
+            Route::post('/update/{category}',[CategoryController::class, 'update'])->name('admin.category.update');
+            Route::get('/status/{category}', [CategoryController::class, 'status'])->name('admin.category.status');
+            Route::post('/delete', [CategoryController::class, 'delete'])->name('admin.category.delete');
+        });
         // Route::prefix('progress-chart')->group(function(){
         //     Route::get('/',[ProgressChartController::class, 'index'])->name('admin.progresschart');
         //     Route::get('get-students-by-session', [ProgressChartController::class, 'getStudentsBySession'])->name('admin.getStudentsBySession');
