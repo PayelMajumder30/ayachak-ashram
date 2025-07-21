@@ -16,9 +16,9 @@
 @section('content')
  <div class="container-xxl flex-grow-1 container-p-y">
 
-  <h4 class="fw-bold py-3 mb-4">Ayachak Ashram</h4>
+  <h4 class="fw-bold py-3 mb-4">Welcom to Ayachak Ashram</h4>
 
-  <div class="row">
+  {{-- <div class="row">
     <!-- Total Students -->
     <div class="col-lg-3 col-md-6 col-12 mb-4">
       <div class="card bg-primary text-white">
@@ -58,15 +58,15 @@
       </div>
     </div>
 
-  </div>
+  </div> --}}
 
   <div class="card">
-  <div class="card-header">
+  {{-- <div class="card-header">
     <h5 class="mb-0">Student Admission Chart</h5>
-  </div>
-  <div class="card-body">
+  </div> --}}
+  {{-- <div class="card-body">
     <canvas id="admissionChart" height="120"></canvas>
-  </div>
+  </div> --}}
 </div>
 
 </div>
@@ -74,7 +74,7 @@
 @section('scripts')
 @vite('resources/assets/js/dashboards-analytics.js')
 
-<script>
+{{-- <script>
   $(document).ready(function () {
     $.ajax({
       url: "{{ route('admin.dashboard.chart-data') }}",
@@ -113,6 +113,6 @@
       }
     });
   });
-</script>
+</script> --}}
 
 @endsection

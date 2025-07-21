@@ -296,8 +296,9 @@ Route::prefix('admin')->group(function () {
                 Route::get('/create', [PageContentController::class, 'create'])->name('admin.pagecontent.create');
                 Route::post('/store',[PageContentController::class, 'store' ])->name('admin.pagecontent.store');
                 Route::get('/edit/{id}', [PageContentController::class, 'edit'])->name('admin.pagecontent.edit');
-                Route::post('/update/{id}', [PageContentController::class, 'update'])->name('admin.pagecontent.update');
+                Route::post('/update', [PageContentController::class, 'update'])->name('admin.pagecontent.update');
                 Route::get('/status/{id}', [PageContentController::class, 'status'])->name('admin.pagecontent.status');
+                Route::post('/delete', [PageContentController::class, 'delete'])->name('admin.pagecontent.delete');
             });
          });
         // Route::prefix('progress-chart')->group(function(){

@@ -42,8 +42,9 @@
                 @enderror
             </div>
 
-            <div class="mb-4">
-                <button type="submit" class="btn btn-primary">Upload</button>
+         
+            <div class="text-start">
+                <button type="submit" class="btn btn-primary px-4 py-2">Create</button>
             </div>
         </form>
     </div>

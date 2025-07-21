@@ -49,15 +49,56 @@ class PageContentController extends Controller
         return redirect()->route('admin.pagecontent.list')->with('success', 'Page content created successfully.');
     }
 
+    public function edit($id){
+        $data = PageContent::findOrFail($id);
+        return view('admin.page_content.edit',compact('data'));
+    }
+
+    public function update(Request $request){
+        $request->validate([
+            'id'          => 'required|exists:page_contents,id',
+            'page'        => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $data = PageContent::findOrFail($request->id);
+        $data->update([
+            'page'  => $request->page,
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('admin.pagecontent.list')->with('success', 'Page content updated successfully.');
+    }
+
     public function status($id)
     {
-        $user = PageContent::findOrFail($id);
+        $data = PageContent::findOrFail($id);
 
-        $user->status = $user->status ? 0 : 1;
-        $user->save();
+        $data->status = $data->status ? 0 : 1;
+        $data->save();
         return response()->json([
             'status'  => 200,
             'message' => 'Status updated successfully'
+        ]);
+    }
+
+    
+    public function delete(Request $request){
+        $data = PageContent::find($request->id); 
+    
+        if (!$data) {
+            return response()->json([
+                'status'    => 404,
+                'message'   => 'Page content not found.',
+            ]);
+        }
+    
+        $data->delete(); 
+        return response()->json([
+            'status'    => 200,
+            'message'   => 'Page content deleted successfully.',
         ]);
     }
 }
