@@ -177,19 +177,19 @@
         </li>
             
 
-      {{-- Report Management --}}
+      {{-- category Management --}}
         {{-- <li class="menu-item {{ (request()->is('admin/report*')) ? 'open' : '' }}">
           <a href="{{route('admin.report.index')}}" class="menu-link">
             <i class="menu-icon fa-solid fa-chart-pie"></i>
-            <div>Report</div>
+            <div>Categories</div>
           </a>
         </li> --}}
-        {{-- <li class="menu-item {{ (request()->is('admin/report*')) ? 'open' : '' }}">
-          <a href="{{route('admin.report.index')}}" class="menu-link">
+        <li class="menu-item {{ (request()->is('admin/category*')) ? 'open' : '' }}">
+          <a href="{{route('admin.category.index')}}" class="menu-link">
             <i class="menu-icon fa-solid fa-chart-pie"></i>
-            <div>Report</div>
+            <div>Shop By Category</div>
           </a>
-        </li> --}}
+        </li>
       
       <li class="menu-item">
         <a class="btn btn-danger d-flex rounded-0" href="{{ route('admin.logout') }}"
