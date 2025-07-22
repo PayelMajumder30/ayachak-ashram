@@ -14,7 +14,37 @@
   </div>
 
     <div class="card-body">
-      
+      <form action="{{ route('admin.pagecontent.store') }}" method="post" enctype="multipart/form-data">@csrf
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="page">New Page Name <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" name="page" id="page" placeholder="Enter new page name" value="{{ old('page') }}">
+                @error('page')
+                    <p class="small text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="title">New Page Title <span style="color: red;">*</span></label>
+                <input type="text" class="form-control" name="title" id="title" placeholder="Enter title.." value="{{ old('title') }}">
+                @error('title')
+                    <p class="small text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description <span style="color: red;">*</span></label>
+            <textarea name="description" id="description" cols="4" rows="5" class="form-control ckeditor" placeholder="">{{ old('description') }}</textarea>
+            @error('description')
+                <p class="small text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
     </div>
 
 </div>
